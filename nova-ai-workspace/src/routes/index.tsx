@@ -77,7 +77,7 @@ function Index() {
   }, [messages, isLoading]);
 
   const sendMessage = async (text: string) => {
-    if (!text.trim() || !apiKey) return;
+    if (!text.trim()) return;
     
     const newMsg: Message = { role: 'user', content: text };
     setMessages(prev => [...prev, newMsg]);
@@ -199,12 +199,6 @@ function Index() {
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-6 scrollbar-none flex flex-col gap-6">
-            {!apiKey && (
-              <div className="bg-red-50 text-red-600 p-4 rounded-2xl text-sm font-semibold mb-4 text-center">
-                Please enter your Gemini API Key in the sidebar to start chatting.
-              </div>
-            )}
-            
             <AnimatePresence>
               {messages.map((msg, idx) => (
                 <motion.div 
@@ -278,7 +272,7 @@ function Index() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => sendMessage(input)}
-                disabled={!input.trim() || isLoading || !apiKey}
+                disabled={!input.trim() || isLoading}
                 className="grid h-[50px] w-[50px] shrink-0 place-items-center rounded-full bg-sidebar text-white disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ArrowUp className="h-[20px] w-[20px]" strokeWidth={2.5} />
