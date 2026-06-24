@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProspectIQ — AI-Powered Intelligence Platform</title>
+  <meta name="description" content="Access powerful AI models, custom agents and multimodal tools. Build without limits with ProspectIQ." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════════════════════════════════
+       DESIGN SYSTEM TOKENS
+       ═══════════════════════════════════════════════════════════════════ */
+    :root {
+      --bg: #F6F4F8;
+      --sidebar-bg: #0B0B0E;
+      --text-primary: #111111;
+      --text-secondary: #6F6F78;
+      --text-muted: #9D9DA7;
+      --white: #FFFFFF;
+      --black: #0B0B0E;
+
+      --yellow: #FFD84D;
+      --pink: #F3A9D8;
+      --green: #57D48D;
+      --purple: #C88CE8;
+      --cream: #F3E7B5;
+
+      --yellow-soft: rgba(255, 216, 77, 0.12);
+      --pink-soft: rgba(243, 169, 216, 0.12);
+      --green-soft: rgba(87, 212, 141, 0.12);
+      --purple-soft: rgba(200, 140, 232, 0.12);
+
+      --radius-btn: 999px;
+      --radius-card: 24px;
+      --radius-hero: 30px;
+      --radius-widget: 36px;
+
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.08);
+      --shadow-glow-yellow: 0 0 20px rgba(255, 216, 77, 0.25);
+      --shadow-glow-pink: 0 0 20px rgba(243, 169, 216, 0.25);
+      --shadow-glow-green: 0 0 20px rgba(87, 212, 141, 0.25);
+      --shadow-glow-purple: 0 0 20px rgba(200, 140, 232, 0.25);
+
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+
+      --sidebar-w: 18%;
+      --main-w: 55%;
+      --panel-w: 27%;
+
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════════════════════════════════ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    button {
+      font-family: var(--font);
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: none;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       LAYOUT SHELL
+       ═══════════════════════════════════════════════════════════════════ */
+    #app-shell {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       LEFT SIDEBAR
+       ═══════════════════════════════════════════════════════════════════ */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-width: 220px;
+      max-width: 260px;
+      background: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 14px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 50;
+      overflow-y: auto;
+    }
+
+    .sidebar::-webkit-scrollbar { width: 0; }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 12px 0;
+      margin-bottom: 32px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--yellow), var(--pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: var(--shadow-glow-yellow);
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .logo-text span { color: var(--yellow); }
+
+    .sidebar-nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      padding: 18px 12px 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 16px;
+      color: rgba(255,255,255,0.5);
+      font-size: 13.5px;
+      font-weight: 500;
+      transition: all 0.25s var(--ease-out);
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      color: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .nav-item.active {
+      color: var(--white);
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 24px rgba(255,255,255,0.04), inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 20px;
+      background: var(--yellow);
+      border-radius: 0 4px 4px 0;
+      box-shadow: 0 0 12px rgba(255,216,77,0.4);
+    }
+
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .nav-item.active .nav-icon { opacity: 1; }
+
+    .nav-badge {
+      margin-left: auto;
+      background: var(--pink);
+      color: var(--black);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .sidebar-footer {
+      padding: 16px 12px 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      margin-top: 12px;
+    }
+
+    .sidebar-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 4px;
+    }
+
+    .user-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    .user-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-plan {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .user-plan span {
+      color: var(--yellow);
+      font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       MAIN CONTENT
+       ═══════════════════════════════════════════════════════════════════ */
+    .main-scroll {
+      margin-left: var(--sidebar-w);
+      width: calc(100% - var(--sidebar-w));
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .main-content {
+      flex: 1;
+      min-width: 0;
+      padding: 20px 24px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── SEARCH BAR ── */
+    .search-bar {
+      width: 100%;
+      height: 60px;
+      background: var(--black);
+      border-radius: var(--radius-btn);
+      display: flex;
+      align-items: center;
+      padding: 0 8px 0 22px;
+      gap: 6px;
+      box-shadow: var(--shadow-lg);
+      transition: box-shadow 0.3s var(--ease-out);
+      animation: fadeSlideDown 0.6s var(--ease-out) both;
+    }
+
+    .search-bar:focus-within {
+      box-shadow: var(--shadow-lg), 0 0 0 2px rgba(255,216,77,0.2);
+    }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      background: none;
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 500;
+      font-family: var(--font);
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      color: rgba(255,255,255,0.3);
+    }
+
+    .search-action {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.45);
+      transition: all 0.2s var(--ease-out);
+      flex-shrink: 0;
+    }
+
+    .search-action:hover {
+      color: var(--white);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .search-action.send-btn {
+      background: var(--yellow);
+      color: var(--black);
+      width: 44px;
+      height: 44px;
+    }
+
+    .search-action.send-btn:hover {
+      transform: scale(1.08);
+      box-shadow: var(--shadow-glow-yellow);
+    }
+
+    /* ── HERO SECTION ── */
+    .hero-card {
+      background: var(--white);
+      border-radius: var(--radius-hero);
+      padding: 40px 48px;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+      animation: fadeSlideUp 0.7s var(--ease-out) 0.1s both;
+    }
+
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      top: -60%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--yellow-soft) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-mascot {
+      width: 180px;
+      height: 180px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .hero-mascot img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 32px rgba(255, 216, 77, 0.25));
+    }
+
+    /* Fallback SVG mascot if image not loaded */
+    .mascot-fallback {
+      width: 180px;
+      height: 180px;
+      background: linear-gradient(160deg, #FFE17D 0%, #FFD84D 50%, #F5C842 100%);
+      border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 72px;
+      position: relative;
+      box-shadow: 0 16px 48px rgba(255, 216, 77, 0.3);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .mascot-fallback::before {
+      content: '';
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 20px;
+      background: var(--yellow);
+      border-radius: 4px;
+    }
+
+    .mascot-fallback::after {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 10px;
+      background: var(--pink);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--pink);
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    .hero-text {
+      flex: 1;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-title {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      max-width: 380px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--pink);
+      color: var(--black);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: var(--radius-btn);
+      transition: all 0.25s var(--ease-out);
+      box-shadow: var(--shadow-glow-pink);
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 32px rgba(243, 169, 216, 0.4);
+    }
+
+    .hero-cta svg {
+      transition: transform 0.2s var(--ease-out);
+    }
+
+    .hero-cta:hover svg {
+      transform: translateX(3px);
+    }
+
+    /* ── CATEGORY PILLS ── */
+    .categories {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      animation: fadeSlideUp 0.7s var(--ease-out) 0.2s both;
+    }
+
+    .cat-pill {
+      padding: 9px 20px;
+      border-radius: var(--radius-btn);
+      font-size: 13px;
+      font-weight: 600;
+      border: 1.5px solid transparent;
+      background: var(--white);
+      color: var(--text-secondary);
+      transition: all 0.25s var(--ease-out);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cat-pill:hover {
+      color: var(--text-primary);
+      border-color: rgba(0,0,0,0.08);
+      transform: translateY(-1px);
+    }
+
+    .cat-pill.active {
+      background: var(--black);
+      color: var(--white);
+      border-color: transparent;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ── BOT CARDS GRID ── */
+    .bots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      animation: fadeSlideUp 0.7s var(--ease-out) 0.3s both;
+    }
+
+    .bot-card {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      padding: 22px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.35s var(--ease-out);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bot-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-card);
+      border: 1.5px solid transparent;
+      transition: border-color 0.3s var(--ease-out);
+      pointer-events: none;
+    }
+
+    .bot-card:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .bot-card:hover::before {
+      border-color: rgba(0,0,0,0.06);
+    }
+
+    .bot-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .bot-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .bot-fav {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .bot-fav:hover {
+      color: var(--pink);
+      background: var(--pink-soft);
+    }
+
+    .bot-fav.liked {
+      color: var(--pink);
+    }
+
+    .bot-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .bot-desc {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .bot-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .bot-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-btn);
+    }
+
+    .tag-coding   { background: var(--purple-soft); color: #9B59B6; }
+    .tag-design   { background: var(--pink-soft); color: #D45D9E; }
+    .tag-business { background: var(--yellow-soft); color: #B8941F; }
+    .tag-research { background: var(--green-soft); color: #2EAD6B; }
+    .tag-education{ background: rgba(111,111,120,0.08); color: var(--text-secondary); }
+
+    .bot-stats {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .bot-stats svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .bot-stat {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .star-color { color: var(--yellow); }
+
+    /* ── RECENT CONVERSATIONS ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      animation: fadeSlideUp 0.7s var(--ease-out) 0.4s both;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .section-action {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: var(--radius-btn);
+      transition: all 0.2s;
+    }
+
+    .section-action:hover {
+      color: var(--text-primary);
+      background: rgba(0,0,0,0.04);
+    }
+
+    .convos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+      animation: fadeSlideUp 0.7s var(--ease-out) 0.45s both;
+    }
+
+    .convo-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s var(--ease-out);
+      cursor: pointer;
+    }
+
+    .convo-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .convo-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .convo-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .convo-pin {
+      color: var(--yellow);
+      font-size: 14px;
+    }
+
+    .convo-preview {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .convo-time {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       RIGHT PANEL
+       ═══════════════════════════════════════════════════════════════════ */
+    .right-panel {
+      width: 300px;
+      flex-shrink: 0;
+      padding: 20px 20px 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeSlideLeft 0.7s var(--ease-out) 0.2s both;
+    }
+
+    .panel-card {
+      background: var(--black);
+      border-radius: var(--radius-widget);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    /* Quick Actions */
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .qa-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 6px 12px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .qa-btn:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-3px);
+    }
+
+    .qa-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .qa-btn:hover .qa-icon {
+      transform: scale(1.1);
+    }
+
+    .qa-icon.pink   { background: var(--pink-soft); color: var(--pink); box-shadow: 0 0 0 0 transparent; }
+    .qa-icon.yellow { background: var(--yellow-soft); color: var(--yellow); }
+    .qa-icon.purple { background: var(--purple-soft); color: var(--purple); }
+    .qa-icon.green  { background: var(--green-soft); color: var(--green); }
+
+    .qa-btn:hover .qa-icon.pink   { box-shadow: var(--shadow-glow-pink); }
+    .qa-btn:hover .qa-icon.yellow { box-shadow: var(--shadow-glow-yellow); }
+    .qa-btn:hover .qa-icon.purple { box-shadow: var(--shadow-glow-purple); }
+    .qa-btn:hover .qa-icon.green  { box-shadow: var(--shadow-glow-green); }
+
+    .qa-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* Favorite Bots */
+    .fav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .fav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      transition: all 0.2s var(--ease-out);
+      cursor: pointer;
+    }
+
+    .fav-item:hover {
+      background: rgba(255,255,255,0.06);
+    }
+
+    .fav-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .fav-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .fav-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fav-desc {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fav-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .fav-status.online  { background: var(--green); box-shadow: 0 0 8px rgba(87,212,141,0.4); }
+    .fav-status.offline { background: rgba(255,255,255,0.15); }
+
+    .fav-launch {
+      padding: 6px 12px;
+      border-radius: var(--radius-btn);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--black);
+      background: var(--yellow);
+      transition: all 0.2s var(--ease-out);
+      flex-shrink: 0;
+      opacity: 0;
+    }
+
+    .fav-item:hover .fav-launch {
+      opacity: 1;
+    }
+
+    .fav-launch:hover {
+      box-shadow: var(--shadow-glow-yellow);
+      transform: scale(1.05);
+    }
+
+    /* ── Stats mini widget ── */
+    .stats-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .stat-mini {
+      flex: 1;
+      background: rgba(255,255,255,0.04);
+      border-radius: 16px;
+      padding: 14px 12px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .stat-num {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .stat-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.3);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       ANIMATIONS
+       ═══════════════════════════════════════════════════════════════════ */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlideLeft {
+      from { opacity: 0; transform: translateX(24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+      50%      { opacity: 0.6; transform: translateX(-50%) scale(1.3); }
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    .stagger-1 { animation-delay: 0.05s !important; }
+    .stagger-2 { animation-delay: 0.10s !important; }
+    .stagger-3 { animation-delay: 0.15s !important; }
+    .stagger-4 { animation-delay: 0.20s !important; }
+    .stagger-5 { animation-delay: 0.25s !important; }
+    .stagger-6 { animation-delay: 0.30s !important; }
+    .stagger-7 { animation-delay: 0.35s !important; }
+    .stagger-8 { animation-delay: 0.40s !important; }
+
+    .fade-in-card {
+      animation: fadeSlideUp 0.5s var(--ease-out) both;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════════════════════════════════════ */
+    @media (max-width: 1200px) {
+      .right-panel { width: 260px; }
+      .hero-card { padding: 30px 32px; }
+      .hero-mascot { width: 140px; height: 140px; }
+      .hero-title { font-size: 30px; }
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar { display: none; }
+      .main-scroll { margin-left: 0; width: 100%; }
+      .right-panel { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .hero-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 28px 24px;
+        gap: 20px;
+      }
+      .hero-sub { margin: 0 auto 20px; }
+      .hero-title { font-size: 26px; }
+      .bots-grid { grid-template-columns: 1fr; }
+      .convos-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app-shell">
+
+    <!-- ════════════ LEFT SIDEBAR ════════════ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">⚡</div>
+        <div class="logo-text">Prospect<span>IQ</span></div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+
+        <a class="nav-item active" data-page="dashboard" onclick="navTo(this)">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+          </span>
+          Dashboard
+        </a>
+
+        <a class="nav-item" data-page="chats" onclick="navTo(this)">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          AI Chats
+          <span class="nav-badge">3</span>
+        </a>
+
+        <a class="nav-item" data-page="docs" onclick="navTo(this)">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+          </span>
+          Documents
+        </a>
+
+        <a class="nav-item" data-page="images" onclick="navTo(this)">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+          </span>
+          Images
+        </a>
+
+        <a class="nav-item" data-page="videos" onclick="navTo(this)">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23,7 16,12 23,17"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </span>
+          Videos
+        </a>
+
+        <a class="nav-item" data-page="agents" onclick="navTo(this)">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          </span>
+          Agents
+          <span class="nav-badge" style="background:var(--green);color:var(--black)">New</span>
+        </a>
+
+        <div class="nav-section-label">Library</div>
+
+        <a class="nav-item" data-page="history" onclick="navTo(this)">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+          </span>
+          History
+        </a>
+
+        <a class="nav-item" data-page="favorites" onclick="navTo(this)">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </span>
+          Favorites
+        </a>
+
+        <a class="nav-item" data-page="settings" onclick="navTo(this)">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </span>
+          Settings
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="user-avatar">A</div>
+          <div class="user-info">
+            <div class="user-name">Ayush Kumar</div>
+            <div class="user-plan"><span>Pro</span> · 2,340 credits</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ════════════ MAIN + RIGHT ════════════ -->
+    <div class="main-scroll">
+      <main class="main-content">
+
+        <!-- Search Bar -->
+        <div class="search-bar" id="search-bar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" type="text" placeholder="Ask anything..." id="search-input" />
+          <button class="search-action" title="Attach file">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          </button>
+          <button class="search-action" title="Voice input">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </button>
+          <button class="search-action send-btn" title="Send">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </button>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero-card">
+          <div class="hero-mascot">
+            <img src="mascot.png" alt="ProspectIQ AI Mascot" onerror="this.parentElement.innerHTML='<div class=\'mascot-fallback\'>🤖</div>'" />
+          </div>
+          <div class="hero-text">
+            <h1 class="hero-title">Build Without<br/>Limits</h1>
+            <p class="hero-sub">Access powerful AI models, custom agents and multimodal tools — all in one beautiful workspace.</p>
+            <button class="hero-cta" onclick="handleUpgrade()">
+              Upgrade to Pro
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Pills -->
+        <div class="categories" id="categories">
+          <button class="cat-pill active" data-cat="all" onclick="filterCat(this)">All</button>
+          <button class="cat-pill" data-cat="assistants" onclick="filterCat(this)">✨ Assistants</button>
+          <button class="cat-pill" data-cat="coding" onclick="filterCat(this)">💻 Coding</button>
+          <button class="cat-pill" data-cat="writing" onclick="filterCat(this)">✍️ Writing</button>
+          <button class="cat-pill" data-cat="design" onclick="filterCat(this)">🎨 Design</button>
+          <button class="cat-pill" data-cat="research" onclick="filterCat(this)">🔬 Research</button>
+          <button class="cat-pill" data-cat="education" onclick="filterCat(this)">📚 Education</button>
+        </div>
+
+        <!-- Bot Cards Grid -->
+        <div class="bots-grid" id="bots-grid">
+          <!-- Injected by JS -->
+        </div>
+
+        <!-- Recent Conversations -->
+        <div class="section-header">
+          <h2 class="section-title">Recent Conversations</h2>
+          <button class="section-action">View All →</button>
+        </div>
+        <div class="convos-grid" id="convos-grid">
+          <!-- Injected by JS -->
+        </div>
+
+      </main>
+
+      <!-- ════════════ RIGHT PANEL ════════════ -->
+      <aside class="right-panel">
+
+        <!-- Quick Actions -->
+        <div class="panel-card">
+          <div class="panel-title">Quick Actions</div>
+          <div class="quick-actions-grid">
+            <button class="qa-btn" onclick="showToast('Agent creator opened!')">
+              <div class="qa-icon pink">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+              </div>
+              <span class="qa-label">Create<br>Agent</span>
+            </button>
+            <button class="qa-btn" onclick="showToast('File uploader ready!')">
+              <div class="qa-icon yellow">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17,8 12,3 7,8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <span class="qa-label">Upload<br>File</span>
+            </button>
+            <button class="qa-btn" onclick="showToast('Image generator ready!')">
+              <div class="qa-icon purple">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+              </div>
+              <span class="qa-label">Generate<br>Image</span>
+            </button>
+            <button class="qa-btn" onclick="showToast('Voice chat starting...')">
+              <div class="qa-icon green">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+              </div>
+              <span class="qa-label">Voice<br>Chat</span>
+            </button>
+            <button class="qa-btn" onclick="showToast('Web search active!')">
+              <div class="qa-icon pink">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </div>
+              <span class="qa-label">Web<br>Search</span>
+            </button>
+            <button class="qa-btn" onclick="showToast('Code editor opened!')">
+              <div class="qa-icon yellow">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/></svg>
+              </div>
+              <span class="qa-label">Run<br>Code</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="panel-card" style="padding: 18px;">
+          <div class="stats-row">
+            <div class="stat-mini">
+              <div class="stat-num" style="color:var(--yellow)">247</div>
+              <div class="stat-lbl">Chats</div>
+            </div>
+            <div class="stat-mini">
+              <div class="stat-num" style="color:var(--green)">18</div>
+              <div class="stat-lbl">Agents</div>
+            </div>
+            <div class="stat-mini">
+              <div class="stat-num" style="color:var(--pink)">5.2k</div>
+              <div class="stat-lbl">Tokens</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Favorite Bots -->
+        <div class="panel-card">
+          <div class="panel-title">⭐ Favorite Bots</div>
+          <div class="fav-list" id="fav-list">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" style="
+    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--black); color: var(--white); padding: 14px 28px; border-radius: var(--radius-btn);
+    font-size: 14px; font-weight: 600; box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+    opacity: 0; z-index: 999; pointer-events: none; display: flex; align-items: center; gap: 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+  ">
+    <span id="toast-text"></span>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════════════
+    //  DATA
+    // ═══════════════════════════════════════════════════════════════════
+    const BOTS = [
+      { id: 1, name: "Code Mentor",      emoji: "💻", color: "#C88CE8", desc: "Expert pair programmer for any language or framework.",                cat: "coding",    tag: "Coding",    tagCls: "tag-coding",   rating: 4.9, users: "12.4k", liked: true  },
+      { id: 2, name: "Design Copilot",    emoji: "🎨", color: "#F3A9D8", desc: "UI/UX design assistant with Figma & CSS superpowers.",                cat: "design",    tag: "Design",    tagCls: "tag-design",   rating: 4.8, users: "8.7k",  liked: false },
+      { id: 3, name: "Startup Advisor",   emoji: "🚀", color: "#FFD84D", desc: "Strategic business advice for founders and entrepreneurs.",           cat: "assistants",tag: "Business",  tagCls: "tag-business", rating: 4.7, users: "6.2k",  liked: true  },
+      { id: 4, name: "Research Genius",   emoji: "🔬", color: "#57D48D", desc: "Deep research across papers, patents, and data sources.",             cat: "research",  tag: "Research",  tagCls: "tag-research", rating: 4.9, users: "15.1k", liked: false },
+      { id: 5, name: "Study Buddy",       emoji: "📚", color: "#F3E7B5", desc: "Personalized learning assistant for any subject.",                    cat: "education", tag: "Education", tagCls: "tag-education",rating: 4.6, users: "22.3k", liked: false },
+      { id: 6, name: "Creative Writer",   emoji: "✍️", color: "#F3A9D8", desc: "Craft stories, scripts, and compelling content effortlessly.",        cat: "writing",   tag: "Writing",   tagCls: "tag-design",   rating: 4.8, users: "9.5k",  liked: true  },
+      { id: 7, name: "Data Analyst",      emoji: "📊", color: "#57D48D", desc: "Transform raw data into actionable insights instantly.",              cat: "research",  tag: "Research",  tagCls: "tag-research", rating: 4.7, users: "7.8k",  liked: false },
+      { id: 8, name: "DevOps Pro",        emoji: "⚙️", color: "#C88CE8", desc: "CI/CD pipelines, cloud infra and deployment automation.",             cat: "coding",    tag: "Coding",    tagCls: "tag-coding",   rating: 4.5, users: "4.1k",  liked: false },
+    ];
+
+    const CONVOS = [
+      { title: "Building a Next.js dashboard",     preview: "Let me help you set up the project structure with TypeScript and Tailwind...",     time: "2 min ago",  pinned: true  },
+      { title: "IDBI Bank product analysis",        preview: "Here's a comparison of FD rates across the top 5 banks in India...",              time: "1 hr ago",   pinned: true  },
+      { title: "React Native vs Flutter",           preview: "For your use case, I'd recommend Flutter because of its single codebase...",     time: "3 hrs ago",  pinned: false },
+      { title: "Marketing strategy brainstorm",     preview: "The key to your B2B SaaS growth is focusing on content-led inbound...",           time: "Yesterday",  pinned: false },
+    ];
+
+    const FAVS = [
+      { name: "Code Mentor",    emoji: "💻", color: "#C88CE8", desc: "Pair programming",  online: true  },
+      { name: "Research Genius", emoji: "🔬", color: "#57D48D", desc: "Deep analysis",     online: true  },
+      { name: "Design Copilot", emoji: "🎨", color: "#F3A9D8", desc: "UI/UX design",      online: false },
+      { name: "Startup Advisor",emoji: "🚀", color: "#FFD84D", desc: "Business strategy",  online: true  },
+    ];
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  RENDER
+    // ═══════════════════════════════════════════════════════════════════
+    function renderBots(filter = "all") {
+      const grid = document.getElementById("bots-grid");
+      const filtered = filter === "all" ? BOTS : BOTS.filter(b => b.cat === filter);
+      grid.innerHTML = filtered.map((b, i) => `
+        <div class="bot-card fade-in-card stagger-${i + 1}" onclick="showToast('Opening ${b.name}...')">
+          <div class="bot-card-top">
+            <div class="bot-avatar" style="background:${b.color}20">${b.emoji}</div>
+            <button class="bot-fav ${b.liked ? 'liked' : ''}" onclick="event.stopPropagation(); toggleLike(${b.id})" title="Favorite">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="${b.liked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+          <div class="bot-name">${b.name}</div>
+          <div class="bot-desc">${b.desc}</div>
+          <div class="bot-meta">
+            <span class="bot-tag ${b.tagCls}">${b.tag}</span>
+            <div class="bot-stats">
+              <span class="bot-stat star-color">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                ${b.rating}
+              </span>
+              <span class="bot-stat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                ${b.users}
+              </span>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderConvos() {
+      const grid = document.getElementById("convos-grid");
+      grid.innerHTML = CONVOS.map((c, i) => `
+        <div class="convo-card fade-in-card stagger-${i + 1}" onclick="showToast('Resuming: ${c.title}')">
+          <div class="convo-top">
+            <div class="convo-title">${c.title}</div>
+            ${c.pinned ? '<span class="convo-pin">📌</span>' : ''}
+          </div>
+          <div class="convo-preview">${c.preview}</div>
+          <div class="convo-time">${c.time}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderFavs() {
+      const list = document.getElementById("fav-list");
+      list.innerHTML = FAVS.map(f => `
+        <div class="fav-item" onclick="showToast('Launching ${f.name}...')">
+          <div class="fav-avatar" style="background:${f.color}20">${f.emoji}</div>
+          <div class="fav-info">
+            <div class="fav-name">${f.name}</div>
+            <div class="fav-desc">${f.desc}</div>
+          </div>
+          <div class="fav-status ${f.online ? 'online' : 'offline'}"></div>
+          <button class="fav-launch" onclick="event.stopPropagation(); showToast('${f.name} launched!')">Launch</button>
+        </div>
+      `).join("");
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  INTERACTIONS
+    // ═══════════════════════════════════════════════════════════════════
+    function navTo(el) {
+      document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+      el.classList.add("active");
+      showToast(`Navigated to ${el.textContent.trim()}`);
+    }
+
+    function filterCat(el) {
+      document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
+      el.classList.add("active");
+      renderBots(el.dataset.cat);
+    }
+
+    function toggleLike(id) {
+      const bot = BOTS.find(b => b.id === id);
+      if (bot) {
+        bot.liked = !bot.liked;
+        const activeCat = document.querySelector(".cat-pill.active")?.dataset.cat || "all";
+        renderBots(activeCat);
+        showToast(bot.liked ? `❤️ ${bot.name} added to favorites` : `${bot.name} removed from favorites`);
+      }
+    }
+
+    function handleUpgrade() {
+      showToast("✨ Pro upgrade flow — coming soon!");
+    }
+
+    // Search enter
+    document.getElementById("search-input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && e.target.value.trim()) {
+        showToast(`Searching: "${e.target.value.trim()}"...`);
+        e.target.value = "";
+      }
+    });
+
+    // Toast
+    let toastTimer;
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      const text = document.getElementById("toast-text");
+      text.textContent = msg;
+      toast.style.opacity = "1";
+      toast.style.transform = "translateX(-50%) translateY(0)";
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateX(-50%) translateY(80px)";
+      }, 2500);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  INIT
+    // ═══════════════════════════════════════════════════════════════════
+    renderBots();
+    renderConvos();
+    renderFavs();
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProspectIQ React App Prototype</title>
+  
+  <!-- Load React and ReactDOM (Development mode) -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  
+  <!-- Load Babel Standalone for on-the-fly JSX transpilation -->
+  <script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0a2e2a;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- React root target -->
+  <div id="root"></div>
+
+  <!-- Load and transpile ProspectIQ.jsx -->
+  <script type="text/babel" data-type="module">
+    import App from './ProspectIQ.jsx';
+    
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+
+</body>
+</html>
