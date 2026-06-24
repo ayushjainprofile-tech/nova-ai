@@ -73,9 +73,9 @@ async def chat_endpoint(request: ChatRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
     memory = get_session_memory(request.session_id)
-    memory.chat_memory.add_user_message(request.message)
+    memory.add_user_message(request.message)
 
-    messages = [SystemMessage(content=SYSTEM_PROMPT)] + memory.chat_memory.messages
+    messages = [SystemMessage(content=SYSTEM_PROMPT)] + memory.messages
 
     try:
         response = llm.invoke(messages)
@@ -101,7 +101,7 @@ async def chat_endpoint(request: ChatRequest):
             except Exception:
                 pass # Fallback if JSON fails to parse
                 
-        memory.chat_memory.add_ai_message(full_response)
+        memory.add_ai_message(full_response)
         
         return ChatResponse(
             reply=clean_response,
