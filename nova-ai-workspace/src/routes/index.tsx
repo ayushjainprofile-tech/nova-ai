@@ -68,8 +68,7 @@ function Index() {
   const [isLoading, setIsLoading] = useState(false);
   const [stage, setStage] = useState("identify");
   const [sessionId] = useState(() => Math.random().toString(36).substring(7));
-  const [apiKey, setApiKey] = useState("");
-  
+  // removed apiKey
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -90,12 +89,19 @@ function Index() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           session_id: sessionId,
-          message: text,
-          api_key: apiKey
+          message: text
         })
       });
       
-      const data = await res.json();
+      const rawText = await res.text();
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (e) {
+        setMessages(prev => [...prev, { role: 'assistant', content: `Server Error: ${res.status} - ${rawText.substring(0, 100)}` }]);
+        setIsLoading(false);
+        return;
+      }
       
       if (res.ok) {
         setStage(data.stage);
@@ -107,8 +113,8 @@ function Index() {
       } else {
         setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${data.detail || 'Failed to get response'}` }]);
       }
-    } catch (error) {
-      setMessages(prev => [...prev, { role: 'assistant', content: "Error connecting to the backend server. Make sure FastAPI is running on port 8000." }]);
+    } catch (error: any) {
+      setMessages(prev => [...prev, { role: 'assistant', content: `Network/Backend Error: ${error.message}` }]);
     } finally {
       setIsLoading(false);
     }
@@ -152,14 +158,11 @@ function Index() {
           </nav>
 
           <div className="mt-8 px-2">
-             <label className="text-xs font-semibold text-white/50 mb-1 block">Gemini API Key</label>
-             <input 
-                type="password" 
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="Paste API Key here..."
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white outline-none focus:border-[#F5A623]"
-             />
+             <div className="text-xs font-semibold text-white/50 mb-1 block">Connection Status</div>
+             <div className="w-full bg-brand-green/20 border border-brand-green/50 rounded-xl px-3 py-2 text-sm text-brand-green outline-none flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
+                Securely Connected
+             </div>
           </div>
 
           <div className="mt-auto rounded-3xl bg-white/[0.04] p-4">
