@@ -59,3 +59,4 @@ env.bak/
 venv.bak/
 .pytest_cache/
 .vercel
+tmp-requirements/

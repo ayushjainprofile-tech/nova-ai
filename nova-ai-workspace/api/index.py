@@ -1,14 +1,20 @@
-import os
 import json
+import os
 import re
+import sys
+from pathlib import Path
 from typing import Optional
+
+# Ensure the local api directory is importable when this file is executed as a Vercel serverless function.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.memory import ConversationBufferMemory
-from langchain.schema import SystemMessage
+from langchain_core.chat_history import InMemoryChatMessageHistory
+from langchain.messages import SystemMessage
 from config import SYSTEM_PROMPT
 from lead_scorer import score_prospect, get_tag
 
@@ -41,7 +47,7 @@ class ChatResponse(BaseModel):
 
 def get_session_memory(session_id: str):
     if session_id not in sessions:
-        sessions[session_id] = ConversationBufferMemory(return_messages=True)
+        sessions[session_id] = InMemoryChatMessageHistory()
     return sessions[session_id]
 
 def extract_stage(text: str):
